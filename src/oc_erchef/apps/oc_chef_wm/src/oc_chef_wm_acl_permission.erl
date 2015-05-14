@@ -88,8 +88,9 @@ validate_request('PUT', Req, #base_state{chef_db_context = DbContext,
     case oc_chef_authz_acl_constraints:check_acl_constraints(AuthzId, Type, Part, Ace) of
       ok ->
         {Req1, State1};
-      _Failures ->
-        {Req1, State1}
+      [ Violation | _T ] ->
+        %% Received one or more failures. Report back the first one.
+        throw({acl_constraint_violation, Violation})
     end.
 
 auth_info(Req, State) ->
@@ -153,7 +154,6 @@ update_from_json(#acl_state{type = Type, authz_id = AuthzId, acl_data = Data},
         throw:bad_group ->
             bad_group
     end.
-
 
 malformed_request_message(Any, _Req, _State) ->
     error({unexpected_malformed_request_message, Any}).

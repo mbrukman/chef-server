@@ -38,9 +38,7 @@ check_admin_group_removal_from_grant_ace(AuthzId, Type, AclPerm, NewAce) ->
         not_removed ->
           false;
         removed ->
-          %% Need a way to indicate the failure, but having the error message
-          %% this deep in the system likely isn't ideal
-          {true, "Admin Group removal from Grant ACE not permitted"}
+          {true, attempted_admin_group_removal_grant_ace}
       end;
     _Other ->
       ok
