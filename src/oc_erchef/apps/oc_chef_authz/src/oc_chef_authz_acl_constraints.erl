@@ -21,6 +21,10 @@
 
 -module(oc_chef_authz_acl_constraints).
 
+-ifdef(TEST).
+-compile([export_all]).
+-endif.
+
 -export([check_acl_constraints/4]).
 
 check_acl_constraints(AuthzId, Type, AclPerm, Ace) ->
